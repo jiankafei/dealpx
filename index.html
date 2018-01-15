@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="<%=htmlWebpackPlugin.options.viewport%>">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title><%=htmlWebpackPlugin.options.title%></title>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+}
+ul{
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+li{
+	flex: 1;
+	list-style-type: none;
+}
+li+li{
+	border-top: 1px solid red;
+}
+</style>
+</head>
+<body>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</body>
+</html>

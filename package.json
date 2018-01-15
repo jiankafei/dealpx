@@ -1,0 +1,24 @@
+{
+  "name": "postcss-unit-converter",
+  "version": "1.0.0",
+  "description": "单位转换器",
+  "main": "index.js",
+  "author": "zr",
+  "license": "MPL-2.0",
+  "scripts": {
+      "start": "",
+      "build": "",
+      "publish": ""
+  },
+  "dependencies": {
+    "postcss": "^6.0.16"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "html-webpack-plugin": "^2.30.1",
+    "postcss-loader": "^2.0.10",
+    "webpack": "^3.10.0"
+  }
+}

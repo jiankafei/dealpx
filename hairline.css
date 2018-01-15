@@ -1,0 +1,143 @@
+/*
+750 > 100rem
+7.5 > 1rem
+
+1. 物理像素布局
+
+<meta name="viewport" content="user-scalable=no>
+!!!待确定viewport的大小!!!
+
+2. 逻辑像素渲染
+
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+*/
+
+/* ios */
+.ios .h{
+	border: 1px solid red;
+}
+@media only screen and (-webkit-device-pixel-ratio: 2){
+	.ios .h{border: .5px solid red;}
+}
+@media only screen and (-webkit-device-pixel-ratio: 3){
+	.ios .h{border: .33333px solid red;}
+}
+@media only screen and (-webkit-device-pixel-ratio: 4){
+	.ios .h{border: .25px solid red;}
+}
+
+
+/* android */
+/***************************************第一套方案*/
+/* base */
+/* h 类必须在每个1px的元素上添加 */
+.droid .h{
+	position: relative;
+}
+.droid .h:after{
+	content: '\2002';
+	position: absolute;
+	transform-origin: 0 0;
+	pointer-events: none;
+}
+/* top bottom */
+.droid .ht:after,.droid .hb:after{
+	left: 0;
+	right: 0;
+	height: 0;
+	border-top: 1px solid;
+	transform: scaleY(.5);
+}
+.droid .ht:after{
+	top: 0;
+}
+.droid .hb:after{
+	bottom: 0;
+	transform-origin: 0 1px;
+}
+/* left right */
+.droid .hl:after,.droid .hr:after{
+	top: 0;
+	bottom: 0;
+	width: 0;
+	border-left: 1px solid;
+	transform: scaleX(.5);
+}
+.droid .hl:after{
+	left: 0;
+}
+.droid .hr:after{
+	right: 0;
+	transform-origin: 1px 0;
+}
+/* box */
+.droid .hb:after{
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border: 1px solid;
+	transform: scale3d(.5, .5);
+}
+/* 使用
+border(selector, color)
+输出
+$selector:after{color: $color}*/
+
+
+/*********************************第二套方案*/
+.droid .h{
+	position: relative;
+}
+.droid .h:after{
+	content: '\2002';
+	position: absolute;
+	transform-origin: 0 0;
+	pointer-events: none;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+/*使用
+border(selector, name, color);
+输出
+$selector:after{$name: 1px solid $color;}
+
+
+/**************************************共有*/
+/* 2 */
+@media only screen and (min-resolution: 1.5dppx){
+	.droid .ht:after,.droid .hb:after{transform: scaleY(.5);}
+	.droid .hl:after,.droid .hr:after{transform: scaleX(.5);}
+	.droid .hb:after{transform: scale3d(.5,.5);}
+}
+/* 3 */
+@media only screen and (min-resolution: 2.5dppx){
+	.droid .ht:after,.droid .hb:after{transform: scaleY(.33333);}
+	.droid .hl:after,.droid .hr:after{transform: scaleX(.33333);}
+	.droid .hb:after{transform: scale3d(.33333,.33333);}
+}
+/* 4 */
+@media only screen and (min-resolution: 3.5dppx){
+	.droid .ht:after,.droid .hb:after{transform: scaleY(.25);}
+	.droid .hl:after,.droid .hr:after{transform: scaleX(.25);}
+	.droid .hb:after{transform: scale3d(.25,.25);}
+}
+
+/*
+标准分辨率媒体查询：min/max-resolution //　支持很好
+非标准分辨率媒体查询：-webkit-min/max-device-pixel-ratio // safari | android 4.3- | IE
+
+
+小记录：
+发布到NPM 官方
+发布到NPM 官方的步骤在这里就不再详述。仅分享一个不错的版本号增加方式（告别packup.json 的手动改版本数字）。
+
+npm version patch => z+1
+npm version minor => y+1 && z=0
+npm version major => x+1 && y=0 && z=0
+与上文所讲的语义化的版本号相关，vX.Y.Z（主版本号.次版本号.修订号）三个选项分别对应三部分的版本号，每次运行命令会导致相应的版本号递增一，同时子版本号清零。记得运行上面命令前先将文件变动提交到git 上去。
+
+之后运行npm publish命令即可。
+*/
