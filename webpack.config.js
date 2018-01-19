@@ -13,23 +13,17 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
+		/* new HtmlWebpackPlugin({
 			template: './static/index.html',
-			filename: './dist/pp.html',
+			// filename: './dist/pp.html',
 			title: '物理像素渲染',
 			viewport: 'user-scalable=no'
-		}),
+		}), */
 		new HtmlWebpackPlugin({
 			template: './static/index.html',
-			filename: './dist/lp.html',
+			// filename: './dist/lp.html',
 			title: '逻辑像素渲染',
 			viewport: 'width=device-width,user-scalable=no'
 		})
-	],
-	devServer: {
-		open: true,
-		hot: true,
-		inline: true,
-		compress: true
-	}
+	]
 };

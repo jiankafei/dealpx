@@ -11,15 +11,15 @@
 	let doc = G.document,
 		de = doc.documentElement,
 		ua = G.navigator.appVersion,
-		ds = ds || 750, // 设计稿大小
-		dpx = dpx || 75, // 设计稿大小对应的根字体大小
 		maxW = 540, // 最大字体宽度
 		tid = null, // timerId
 		dt = deviceType(), // 设备类型
 		pcStyleEle = null; //给pc添加的样式元素
+	ds = ds || 750; // 设计稿大小
+	dpx = dpx || 75; // 设计稿大小对应的根字体大小
 
 	// pc上隐藏滚动条，宽度为414，并且为html和定位fixed元素添加宽度
-	dt === 'pc' && (pcStyleEle = addStylesheetRules('::-webkit-scrollbar{display: none !important}.fixed{position: fixed !important;left: 0 !important;right: 0 !important;}html, .fixed{margin-left: auto !important;margin-right: auto !important;width: '+ 414 * dpr +'px !important;}'));
+	dt === 'pc' && (pcStyleEle = addStylesheetRules('::-webkit-scrollbar{display: none !important}.fixed{position: fixed !important;left: 0 !important;right: 0 !important;}html, .fixed{margin-left: auto !important;margin-right: auto !important;width: '+ 414 +'px !important;}'));
 
 	// 改变窗口
 	G.addEventListener('resize', function () {

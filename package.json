@@ -6,7 +6,7 @@
   "author": "zr",
   "license": "MPL-2.0",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --hot --inline --open",
     "build": "webpack --process --hide-modules --colors"
   },
   "dependencies": {},
