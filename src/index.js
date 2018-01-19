@@ -57,7 +57,7 @@ function addMediaQuery(root, selector, decl){
 };
 // 银行家舍入法
 function toFixed(num, d){
-	const re = new RegExp(`^(\d*\.\d{${d-1}})(\d)(\d)`);
+	const re = new RegExp(`^(\\d*\\.\\d{${d-1}})(\\d)(\\d)`);
 	const match = re.exec(num);
 	const m1 = match[1];
 	const m2 = ~~match[2];
@@ -78,7 +78,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		if (!p1) return m;
 		const pixels = parseFloat(p1);
 		if (pixels <= 1) return m;
-		if (options.unit === 'rem') return toFixed(pixels / options.rpx, digits) + unit; // rem单位，和rpx配套
+		if (options.unit === 'rem') return toFixed(pixels / options.rpx, options.digits) + options.unit; // rem单位，和rpx配套
 		else return toFixed(pixels / options.size * 100, options.digits) + options.unit; // vw单位
 	};
     return root => {

@@ -1,3 +1,3 @@
 import '../static/reset.css';
-import '../static/trans.css';
+import '../static/index.css';
 console.log('运行成功！');

@@ -11,6 +11,10 @@ li{
 	flex: 1;
 	list-style-type: none;
 }
+li>div{
+	width: 100px;
+	height: 100px;
+}
 li + li{
 	border-top: 1px solid red;
 }
