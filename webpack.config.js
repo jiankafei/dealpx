@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
-	entry: path.join(__dirname, 'src', 'app'),
+	entry: './src/app.js',
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
@@ -17,25 +17,18 @@ module.exports = {
 			template: './static/index.html',
 			filename: './dist/pp.html',
 			title: '物理像素渲染',
-			viewport: 'user-scalable=no',
-			chunks: {
-				head: {
-					entry: './static/rpx.js',
-					css: ['./static/reset.css']
-				}
-			}
+			viewport: 'user-scalable=no'
 		}),
 		new HtmlWebpackPlugin({
 			template: './static/index.html',
 			filename: './dist/lp.html',
 			title: '逻辑像素渲染',
-			viewport: 'width: device-width, user-scalable=no',
-			chunks: {
-				head: {
-					entry: './static/rpx.js',
-					css: ['./static/reset.css']
-				}
-			}
+			viewport: 'width=device-width,user-scalable=no'
 		})
-	]
+	],
+	devServer: {
+		open: true,
+		hot: true,
+		compress: true
+	}
 };
