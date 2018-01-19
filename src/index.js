@@ -15,9 +15,9 @@ const defaultOptions = {
 	digits: 5, // 单位精度，默认５，none表示不做处理
 	excludeRule: [], // 选择器黑名单，元素为string | regexp
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
-	onePP: true, // border的1px像素是否处理成物理像素1px，默认true
+	onePP: false, // border的1px像素是否处理成物理像素1px，默认false
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
-	fontSize: 'convert', // 字体大小处理
+	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
 		// media - 不转换，但为字体大小添加媒体查询
 		// none - 不做任何处理
@@ -33,9 +33,9 @@ function isExclude(selector, exclude){
 };
 // 添加媒体查询
 function addMediaQuery(root, selector, decl){
-	const px2 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 2);
-	const px3 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 3);
-	const px4 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 4);
+	const px2 = decl.value.replace(/(\d+)(?=px)/, $1 * 2);
+	const px3 = decl.value.replace(/(\d+)(?=px)/, $1 * 3);
+	const px4 = decl.value.replace(/(\d+)(?=px)/, $1 * 4);
 	root.append(`@media only screen and (-webkit-device-pixel-ratio: 2){
 		${selector}{${decl.prop}: ${px2};}
 	}
@@ -57,7 +57,7 @@ function addMediaQuery(root, selector, decl){
 };
 // 银行家舍入法
 function toFixed(num, d){
-	const re = new RegExp(`^([0-9]+\.[0-9]{${d-1}})([0-9])([0-9])`);
+	const re = new RegExp(`^(\d*\.\d{${d-1}})(\d)(\d)`);
 	const match = re.exec(num);
 	const m1 = match[1];
 	const m2 = ~~match[2];
@@ -68,8 +68,9 @@ function toFixed(num, d){
 	}
 	return num.toFixed(d);
 }
+
 // 输出
-export default postcss.plugin('post-unit-converter', options => {
+module.exports = postcss.plugin('post-unit-converter', options => {
 	options = Object.assign(Object.create(null), defaultOptions, options);
 	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)px/ig;
 	// 替换操作的回调函数
@@ -84,7 +85,7 @@ export default postcss.plugin('post-unit-converter', options => {
 		// AST处理
         root.walkRules(rule => {
 			// 单个规则处理
-			if (isBlackList(rule.selector, options.exclude)) return;
+			if (isExclude(rule.selector, options.exclude)) return;
 			rule.walkDecls((decl, i) => {
 				// 单个声明处理
 				if (decl.value.indexOf('px') === -1) return; // 值没有px则直接返回
