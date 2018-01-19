@@ -8,7 +8,7 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			{test: /\.js$/, use: 'babel-loader', exclude: [/node_modules/, /assets/]},
+			{test: /\.js$/, use: 'babel-loader', exclude: [/node_modules/, /static/]},
 			{test: /\.css$/, use: ['style-loader', 'css-loader']}
 		]
 	},
@@ -29,6 +29,7 @@ module.exports = {
 	devServer: {
 		open: true,
 		hot: true,
+		inline: true,
 		compress: true
 	}
 };
