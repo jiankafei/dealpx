@@ -1,2 +1,2 @@
-import '../assets/trans.css';
+import '../static/trans.css';
 console.log('运行成功！');

@@ -14,26 +14,26 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './assets/index.html',
+			template: './static/index.html',
 			filename: './dist/pp.html',
 			title: '物理像素渲染',
 			viewport: 'user-scalable=no',
 			chunks: {
 				head: {
-					entry: './assets/rpx.js',
-					css: ['./assets/reset.css']
+					entry: './static/rpx.js',
+					css: ['./static/reset.css']
 				}
 			}
 		}),
 		new HtmlWebpackPlugin({
-			template: './assets/index.html',
+			template: './static/index.html',
 			filename: './dist/lp.html',
 			title: '逻辑像素渲染',
 			viewport: 'width: device-width, user-scalable=no',
 			chunks: {
 				head: {
-					entry: './assets/rpx.js',
-					css: ['./assets/reset.css']
+					entry: './static/rpx.js',
+					css: ['./static/reset.css']
 				}
 			}
 		})
