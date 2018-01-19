@@ -85,7 +85,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		// AST处理
         root.walkRules(rule => {
 			// 单个规则处理
-			if (isExclude(rule.selector, options.exclude)) return;
+			if (isExclude(rule.selector, options.excludeRule)) return;
 			rule.walkDecls((decl, i) => {
 				// 单个声明处理
 				if (decl.value.indexOf('px') === -1) return; // 值没有px则直接返回
