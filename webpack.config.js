@@ -8,14 +8,14 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			{test: /\.js$/, use: 'babel-loader', exclude: /node_modules/},
+			{test: /\.js$/, use: 'babel-loader', exclude: [/node_modules/, /assets/]},
 			{test: /\.css$/, use: ['style-loader', 'css-loader']}
 		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './assets/index.html',
-			filename: '/dist/pp.html',
+			filename: './dist/pp.html',
 			title: '物理像素渲染',
 			viewport: 'user-scalable=no',
 			chunks: {
@@ -27,7 +27,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './assets/index.html',
-			filename: 'lp.html',
+			filename: './dist/lp.html',
 			title: '逻辑像素渲染',
 			viewport: 'width: device-width, user-scalable=no',
 			chunks: {
