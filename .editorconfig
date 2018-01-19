@@ -11,9 +11,17 @@ insert_final_newline = true
 [*.{js,css,html}]
 charset = utf-8
 
+[*.sss]
+indent_style = space
+indent_size = 2
+
 [*.{json,yml}]
 indent_style = space
-indent_size = 4
+indent_size = 2
+
+[.*]
+indent_style = space
+indent_size = 2
 
 [README.md]
 trim_trailing_whitespace = ignore

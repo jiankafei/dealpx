@@ -2,7 +2,7 @@
  * UnitConverter
  * Author Zr
  * 注意：
- * １．黑名单选择器只能是单个选择器(a,b)不被允许
+ * １．黑名单选择器只能是单个选择器(a,b{...})不被允许
  * ２．黑名单选择器里的所有px包括font-size都不会被转换
  */
 'use strict';
@@ -10,7 +10,8 @@ const postcss = require('postcss');
 
 const defaultOptions = {
 	unit: 'rem', // 转换到的单位，默认rem(vw | rem)
-	size: '750', // 设计稿像素宽度，默认414
+	size: 750, // 设计稿像素宽度，默认750
+	rpx: 75, // 设计稿大小对应的根字体大小，默认75
 	digits: 5, // 单位精度，默认５，none表示不做处理
 	excludeRule: [], // 选择器黑名单，元素为string | regexp
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
@@ -31,8 +32,28 @@ function isExclude(selector, exclude){
 	});
 };
 // 添加媒体查询
-function addMediaQuery(selector, decl){
-	// do
+function addMediaQuery(root, selector, decl){
+	const px2 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 2);
+	const px3 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 3);
+	const px4 = decl.value.replace(/([0-9]+)(?=px)/, $1 * 4);
+	root.append(`@media only screen and (-webkit-device-pixel-ratio: 2){
+		${selector}{${decl.prop}: ${px2};}
+	}
+	@media only screen and (-webkit-device-pixel-ratio: 3){
+		${selector}{${decl.prop}: ${px3};}
+	}
+	@media only screen and (-webkit-device-pixel-ratio: 4){
+		${selector}{${decl.prop}: ${px4};}
+	}
+	@media only screen and (min-resolution: 1.5dppx){
+		${selector}{${decl.prop}: ${px2};}
+	}
+	@media only screen and (min-resolution: 2.5dppx){
+		${selector}{${decl.prop}: ${px3};}
+	}
+	@media only screen and (min-resolution: 3.5dppx){
+		${selector}{${decl.prop}: ${px4};}
+	}`);
 };
 // 银行家舍入法
 function toFixed(num, d){
@@ -48,7 +69,7 @@ function toFixed(num, d){
 	return num.toFixed(d);
 }
 // 输出
-module.exports = postcss.plugin('post-unit-converter', options => {
+export default postcss.plugin('post-unit-converter', options => {
 	options = Object.assign(Object.create(null), defaultOptions, options);
 	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)px/ig;
 	// 替换操作的回调函数
@@ -56,12 +77,12 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		if (!p1) return m;
 		const pixels = parseFloat(p1);
 		if (pixels <= 1) return m;
-		return toFixed(, digits) + unit;
-		return toFixed(pixels / options.size * 100, options.digits) + options.unit;
+		if (options.unit === 'rem') return toFixed(pixels / options.rpx, digits) + unit; // rem单位，和rpx配套
+		else return toFixed(pixels / options.size * 100, options.digits) + options.unit; // vw单位
 	};
-    return css => {
+    return root => {
 		// AST处理
-        css.walkRules(rule => {
+        root.walkRules(rule => {
 			// 单个规则处理
 			if (isBlackList(rule.selector, options.exclude)) return;
 			rule.walkDecls((decl, i) => {
@@ -73,19 +94,19 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 							decl.value = decl.value.replace(pxRegExp, replaceFn);
 							break;
 						case 'media':
-							addMediaQuery(rule.selector, decl);
+							addMediaQuery(root, rule.selector, decl);
 							break;
 					}
-				} else if (decl.prop.indexOf('border') !== -1 && options.one) { // 处理border
-					// do
-				} else { // 处理其他
+				} else if (decl.prop.indexOf('border') !== -1 && options.onePP) { // 处理border
+					console.log('处理border');
+				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
 			});
 		});
 		// 是否转换媒体查询的查询选项的单位
 		if (options.mediaQuery) {
-			css.walkAtRules('media', rule => {
+			root.walkAtRules('media', rule => {
 				if (rule.params.indexOf('px') === -1) return;
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
