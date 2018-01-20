@@ -45,14 +45,15 @@ class RuleManage {
 		let sel2 = '';
 		let sel3 = '';
 		let sel4 = '';
+		const re = /(\d+)(?=px)/;
 		for (const item of this.queue) {
-			const px2 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+			const px2 = item.decl.value.replace(re, function($1){
 				return $1 * 2;
 			});
-			const px3 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+			const px3 = item.decl.value.replace(re, function($1){
 				return $1 * 3;
 			});
-			const px4 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+			const px4 = item.decl.value.replace(re, function($1){
 				return $1 * 4;
 			});
 			sel2 += `${item.sel}{${item.decl.prop}: ${px2};}`;
