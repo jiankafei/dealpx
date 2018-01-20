@@ -5,11 +5,14 @@ ul{
 }
 li{
 	flex: 1;
+	display: flex;
 	list-style-type: none;
 }
 li>div{
 	width: 100px;
 	height: 100px;
+	overflow: hidden;
+	font-size: 20px;
 }
 li + li{
 	border-top: 1px solid red;

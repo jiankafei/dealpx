@@ -12,7 +12,7 @@ const defaultOptions = {
 	unit: 'rem', // 转换到的单位，默认rem(vw | rem)
 	size: 750, // 设计稿像素宽度，默认750
 	rpx: 75, // 设计稿大小对应的根字体大小，默认75
-	digits: 5, // 单位精度，默认５，none表示不做处理
+	digits: 4, // 单位精度，默认4，none表示不做处理
 	excludeRule: [], // 选择器黑名单，元素为string | regexp
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
 	onePP: false, // border的1px像素是否处理成物理像素1px，默认false
@@ -31,30 +31,48 @@ function isExclude(selector, exclude){
 		if (black instanceof RegExp) return black.test(selector);
 	});
 };
-// 添加媒体查询
-function addMediaQuery(root, selector, decl){
-	const px2 = decl.value.replace(/(\d+)(?=px)/, $1 * 2);
-	const px3 = decl.value.replace(/(\d+)(?=px)/, $1 * 3);
-	const px4 = decl.value.replace(/(\d+)(?=px)/, $1 * 4);
-	root.append(`@media only screen and (-webkit-device-pixel-ratio: 2){
-		${selector}{${decl.prop}: ${px2};}
+// 规则操作
+class RuleManage {
+	constructor(){
+		this.queue = [];
 	}
-	@media only screen and (-webkit-device-pixel-ratio: 3){
-		${selector}{${decl.prop}: ${px3};}
+	addToQueue(sel, decl){
+		this.queue.push({
+			sel,
+			decl,
+		});
 	}
-	@media only screen and (-webkit-device-pixel-ratio: 4){
-		${selector}{${decl.prop}: ${px4};}
+	addToRule(root){
+		let sel2 = '';
+		let sel3 = '';
+		let sel4 = '';
+		for (const item of this.queue) {
+			const px2 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+				return $1 * 2;
+			});
+			const px3 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+				return $1 * 3;
+			});
+			const px4 = item.decl.value.replace(/(\d+)(?=px)/, function($1){
+				return $1 * 4;
+			});
+			sel2 += `${item.sel}{${item.decl.prop}: ${px2};}`;
+			sel3 += `${item.sel}{${item.decl.prop}: ${px3};}`;
+			sel4 += `${item.sel}{${item.decl.prop}: ${px4};}`;
+		}
+
+		root.append(`@media only screen and (-webkit-device-pixel-ratio: 2){${sel2}}
+		@media only screen and (-webkit-device-pixel-ratio: 3){${sel3}}
+		@media only screen and (-webkit-device-pixel-ratio: 4){${sel4}}
+		@media only screen and (min-resolution: 1.5dppx){${sel2}}
+		@media only screen and (min-resolution: 2.5dppx){${sel3}}
+		@media only screen and (min-resolution: 3.5dppx){${sel4}}`);
 	}
-	@media only screen and (min-resolution: 1.5dppx){
-		${selector}{${decl.prop}: ${px2};}
+	clean(){
+		this.queue.length = 0;
 	}
-	@media only screen and (min-resolution: 2.5dppx){
-		${selector}{${decl.prop}: ${px3};}
-	}
-	@media only screen and (min-resolution: 3.5dppx){
-		${selector}{${decl.prop}: ${px4};}
-	}`);
-};
+}
+
 // 银行家舍入法
 function toFixed(num, d){
 	const re = new RegExp(`^(\\d*\\.\\d{${d-1}})(\\d)(\\d)`);
@@ -81,6 +99,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		if (options.unit === 'rem') return toFixed(pixels / options.rpx, options.digits) + options.unit; // rem单位，和rpx配套
 		else return toFixed(pixels / options.size * 100, options.digits) + options.unit; // vw单位
 	};
+	const ruleMng = new RuleManage();
     return root => {
 		// AST处理
         root.walkRules(rule => {
@@ -95,7 +114,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 							decl.value = decl.value.replace(pxRegExp, replaceFn);
 							break;
 						case 'media':
-							addMediaQuery(root, rule.selector, decl);
+							ruleMng.addToQueue(rule.selector, decl);
 							break;
 					}
 				} else if (decl.prop.indexOf('border') !== -1 && options.onePP) { // 处理border
@@ -112,5 +131,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
 		}
+		ruleMng.addToRule(root);
+		ruleMng.clean();
     };
 });
