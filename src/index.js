@@ -45,7 +45,7 @@ class RuleManage {
 		let sel2 = '';
 		let sel3 = '';
 		let sel4 = '';
-		const re = /(\d+)(?=px)/;
+		const re = /(\d*\.?\d+)(?=px)/;
 		for (const item of this.queue) {
 			const px2 = item.decl.value.replace(re, function($1){
 				return $1 * 2;
@@ -90,7 +90,8 @@ function toFixed(num, d){
 // 输出
 module.exports = postcss.plugin('post-unit-converter', options => {
 	options = Object.assign(Object.create(null), defaultOptions, options);
-	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)px/ig;
+	// 排除　'' "" url()
+	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)(?=px)/ig;
 	// 替换操作的回调函数
 	const replaceFn = (m, p1) => {
 		if (!p1) return m;
