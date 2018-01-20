@@ -91,7 +91,7 @@ function toFixed(num, d){
 module.exports = postcss.plugin('post-unit-converter', options => {
 	options = Object.assign(Object.create(null), defaultOptions, options);
 	// 排除　'' "" url()
-	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)(?=px)/ig;
+	const pxRegExp = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)px/ig;
 	// 替换操作的回调函数
 	const replaceFn = (m, p1) => {
 		if (!p1) return m;
