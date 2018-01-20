@@ -1,0 +1,25 @@
+ul{
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+li{
+	flex: 1;
+	display: flex;
+	list-style-type: none;
+}
+li>div{
+	width: 1.3333rem;
+	height: 1.3333rem;
+	overflow: hidden;
+	font-size: 20px;
+}
+li + li{
+	border-top: 1px solid red;
+}
+@media only screen and (-webkit-device-pixel-ratio: 2){li>div{font-size: 40px;}}
+@media only screen and (-webkit-device-pixel-ratio: 3){li>div{font-size: 60px;}}
+@media only screen and (-webkit-device-pixel-ratio: 4){li>div{font-size: 80px;}}
+@media only screen and (min-resolution: 1.5dppx){li>div{font-size: 40px;}}
+@media only screen and (min-resolution: 2.5dppx){li>div{font-size: 60px;}}
+@media only screen and (min-resolution: 3.5dppx){li>div{font-size: 80px;}}
