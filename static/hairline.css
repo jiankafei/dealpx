@@ -26,7 +26,6 @@
 	.ios .h{border: .25px solid red;}
 }
 
-
 /* android */
 /***************************************第一套方案*/
 /* base */
@@ -102,7 +101,7 @@ $selector:after{color: $color}*/
 /*使用
 border(selector, name, color);
 输出
-$selector:after{$name: 1px solid $color;}
+selector:after{name: 1px solid color;}
 
 
 /**************************************共有*/

@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --open",
     "build": "webpack --process --hide-modules --colors",
-    "post": "node ./src/trans.js"
+    "trans": "node ./src/trans.js"
   },
   "dependencies": {},
   "devDependencies": {
