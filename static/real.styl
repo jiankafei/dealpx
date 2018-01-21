@@ -1,0 +1,35 @@
+/* ios */
+@media only screen and (-webkit-device-pixel-ratio: 2){
+	.ios sel{border: .5px solid color;}
+}
+@media only screen and (-webkit-device-pixel-ratio: 3){
+	.ios sel{border: .33333px solid color;}
+}
+@media only screen and (-webkit-device-pixel-ratio: 4){
+	.ios sel{border: .25px solid color;}
+}
+
+/* android */
+.droid sel{
+	position: relative;
+}
+.droid sel:after{
+	content: '\2002';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	transform-origin: 0 0;
+	border: 1px solid color;
+	pointer-events: none;
+}
+@media only screen and (min-resolution: 1.5dppx){
+	.droid sel:after{transform: scale3d(.5,.5);}
+}
+@media only screen and (min-resolution: 2.5dppx){
+	.droid sel:after{transform: scale3d(.33333,.33333);}
+}
+@media only screen and (min-resolution: 3.5dppx){
+	.droid sel:after{transform: scale3d(.25,.25);}
+}
