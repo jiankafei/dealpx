@@ -47,14 +47,15 @@ class RuleManage {
 		let sel3 = '';
 		let sel4 = '';
 		const re = /(\d*\.?\d+)(?=px)/;
+		let px2, px3, px4;
 		for (const item of this.queue) {
-			const px2 = item.decl.value.replace(re, function($1){
+			px2 = item.decl.value.replace(re, function($1){
 				return $1 * 2;
 			});
-			const px3 = item.decl.value.replace(re, function($1){
+			px3 = item.decl.value.replace(re, function($1){
 				return $1 * 3;
 			});
-			const px4 = item.decl.value.replace(re, function($1){
+			px4 = item.decl.value.replace(re, function($1){
 				return $1 * 4;
 			});
 			sel2 += `${item.sel}{${item.decl.prop}: ${px2};}`;
@@ -78,13 +79,34 @@ class BorderManage {
 	constructor(){
 		this.queue = [];
 	}
-	addToQueue(sel, decl){
+	addToQueue(rule, decl){
 		this.queue.push(
-			sel,
+			rule,
 			decl,
 		);
 	}
-	addToRule(root){}
+	addToRule(root){
+		const re = /1(?=px)/;
+		let v, v2, v3, v4, sel, prop;
+		for (const item of this.queue) {
+			item.rule.removeChild(item.decl); // 先删除当前border
+			sel = item.rule.selector;
+			prop = item.decl.prop;
+			v = item.decl.value;
+			v2 = v.replace(re, '0.5');
+			v3 = v.replace(re, '0.33333');
+			v4 = v.replace(re, '0.25');
+			root.append(`@media only screen and (-webkit-device-pixel-ratio: 1){.ios ${sel}{${prop}: ${v};}}
+			@media only screen and (-webkit-device-pixel-ratio: 2){.ios ${sel}{${prop}: ${v2};}}
+			@media only screen and (-webkit-device-pixel-ratio: 3){.ios ${sel}{${prop}: ${v3};}}
+			@media only screen and (-webkit-device-pixel-ratio: 4){.ios ${sel}{${prop}: ${v4};}}
+			.droid sel{position: relative;}
+			.droid sel:after{content: '\2002';position: absolute;left: 0;right: 0;top: 0;bottom: 0;transform-origin: 0 0;${prop}: ${v};pointer-events: none;}
+			@media only screen and (min-resolution: 1.5dppx){.droid sel:after{transform: scale3d(.5,.5);}}
+			@media only screen and (min-resolution: 2.5dppx){.droid sel:after{transform: scale3d(.33333,.33333);}}
+			@media only screen and (min-resolution: 3.5dppx){.droid sel:after{transform: scale3d(.25,.25);}}`);
+		}
+	}
 	clean(){
 		this.queue.length = 0;
 	}
@@ -135,8 +157,8 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 							ruleMng.addToQueue(rule.selector, decl);
 							break;
 					}
-				} else if (decl.prop.indexOf('border') !== -1) {
-					brMng.addToQueue();
+				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) {
+					brMng.addToQueue(rule, decl);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
