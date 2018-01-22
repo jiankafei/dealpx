@@ -171,9 +171,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
 		}
-		ruleMng.addToRule(root);
-		ruleMng.clean();
-		brMng.addToRule(root);
-		brMng.clean();
+		ruleMng.queue.length !== 0 && ruleMng.addToRule(root) && ruleMng.clean();
+		brMng.queue.length !== 0 && brMng.addToRule(root) && brMng.clean();
     };
 });

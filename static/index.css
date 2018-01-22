@@ -16,12 +16,6 @@ li>div{
 }
 li + li{
 }
-@media only screen and (-webkit-device-pixel-ratio: 2){}
-@media only screen and (-webkit-device-pixel-ratio: 3){}
-@media only screen and (-webkit-device-pixel-ratio: 4){}
-@media only screen and (min-resolution: 1.5dppx){}
-@media only screen and (min-resolution: 2.5dppx){}
-@media only screen and (min-resolution: 3.5dppx){}
 @media only screen and (-webkit-device-pixel-ratio: 1){.ios li + li{border-top: 1px solid red;}}
 @media only screen and (-webkit-device-pixel-ratio: 2){.ios li + li{border-top: 0.5px solid red;}}
 @media only screen and (-webkit-device-pixel-ratio: 3){.ios li + li{border-top: 0.33333px solid red;}}
