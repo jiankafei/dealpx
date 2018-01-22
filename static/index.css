@@ -15,11 +15,19 @@ li>div{
 	font-size: 20px;
 }
 li + li{
-	border-top: 1px solid red;
 }
-@media only screen and (-webkit-device-pixel-ratio: 2){li>div{font-size: 40px;}}
-@media only screen and (-webkit-device-pixel-ratio: 3){li>div{font-size: 60px;}}
-@media only screen and (-webkit-device-pixel-ratio: 4){li>div{font-size: 80px;}}
-@media only screen and (min-resolution: 1.5dppx){li>div{font-size: 40px;}}
-@media only screen and (min-resolution: 2.5dppx){li>div{font-size: 60px;}}
-@media only screen and (min-resolution: 3.5dppx){li>div{font-size: 80px;}}
+@media only screen and (-webkit-device-pixel-ratio: 2){}
+@media only screen and (-webkit-device-pixel-ratio: 3){}
+@media only screen and (-webkit-device-pixel-ratio: 4){}
+@media only screen and (min-resolution: 1.5dppx){}
+@media only screen and (min-resolution: 2.5dppx){}
+@media only screen and (min-resolution: 3.5dppx){}
+@media only screen and (-webkit-device-pixel-ratio: 1){.ios li + li{border-top: 1px solid red;}}
+@media only screen and (-webkit-device-pixel-ratio: 2){.ios li + li{border-top: 0.5px solid red;}}
+@media only screen and (-webkit-device-pixel-ratio: 3){.ios li + li{border-top: 0.33333px solid red;}}
+@media only screen and (-webkit-device-pixel-ratio: 4){.ios li + li{border-top: 0.25px solid red;}}
+.droid li + li{position: relative;}
+.droid li + li:after{content: '\2002';position: absolute;left: 0;top: 0;transform-origin: 0 0;border-top: 1px solid red;pointer-events: none;}
+@media only screen and (min-resolution: 1.5dppx){.droid li + li:after{width: 200%;height: 200%;transform: scale3d(.5,.5,1);}}
+@media only screen and (min-resolution: 2.5dppx){.droid li + li:after{width: 300%;height: 300%;transform: scale3d(.33333,.33333,1);}}
+@media only screen and (min-resolution: 3.5dppx){.droid li + li:after{width: 400%;height: 400%;transform: scale3d(.25,.25,1);}}

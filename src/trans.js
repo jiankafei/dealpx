@@ -6,7 +6,7 @@ const coverter = require('./index');
 
 const options = {
 	unit: 'rem',
-	fontSize: 'media'
+	fontSize: 'none'
 };
 const css = fs.readFileSync(path.resolve(__dirname, 'index.css'), 'utf8');
 const processCSS = postcss(coverter(options)).process(css).css;
