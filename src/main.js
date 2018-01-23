@@ -1,7 +1,65 @@
 console.log('运行成功！');
 import './static/reset.css';
 import './static/index.css';
-import riot from 'riot';
-import app from './app.tag';
+import { h, render } from 'preact';
 
-riot.mount('app');
+render((
+    <ul>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+		<li>
+			<div>实打实的发生地方</div>
+			<div>来看看你离开对方客服</div>
+			<div>选错了人愤怒是打开服了人</div>
+			<div>现场来看撒的风范股份的方式</div>
+			<div>来大神快发啦儿童热个人给</div>
+			<div>策略偶刚开始的罚款进而进入</div>
+		</li>
+	</ul>
+), document.body);
