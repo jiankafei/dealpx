@@ -40,6 +40,7 @@ module.exports = merge(baseWebpackConfig, {
 			title: '逻辑像素渲染',
 			lang: 'zh-cmn-Hans',
 			meta: [{name: 'viewport', content: 'width=device-width,user-scalable=no'}],
+			links: [],
 			scripts: [],
 		}),
 	]
