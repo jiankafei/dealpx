@@ -22,6 +22,7 @@
     "postcss": "^6.0.16",
     "rimraf": "^2.6.2",
     "style-loader": "^0.19.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0",
     "webpack-merge": "^4.1.1"

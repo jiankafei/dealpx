@@ -6,6 +6,7 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const env = require('../config/prod.env');
 
@@ -18,8 +19,16 @@ module.exports = merge(baseWebpackConfig, {
 		new webpack.DefinePlugin({
 			'process.env': env,
 		}),
+		new UglifyJsPlugin({
+			uglifyOptions: {
+				compress: {
+					warnings: false
+				}
+			},
+			parallel: true
+		}),
 		new ExtractTextPlugin({
-			filename: path.resolve(config.build.assetsSubDirectory, 'css/[name].[contenthash].css'),
+			filename: path.join(config.build.assetsSubDirectory, 'css/[name].[contenthash].css'),
 		}),
 		new HtmlWebpackPlugin({
 			template: './src/static/index.html',
