@@ -1,4 +1,3 @@
-console.log('运行成功！');
 import './static/reset.css';
 import './static/index.css';
 import { h, render } from 'preact';

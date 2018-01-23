@@ -6,3 +6,6 @@ yarn run trans
 
 2. 运行
 yarn start
+
+3. 构建
+yarn run build
