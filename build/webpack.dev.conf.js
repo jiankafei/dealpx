@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const HOST = process.env.HOST;
 const PORT = process.env.PORT && Number(process.env.PORT);
+const env = require('../config/dev.env');
 
 module.exports = merge(baseWebpackConfig, {
 	devServer: {
@@ -34,7 +35,7 @@ module.exports = merge(baseWebpackConfig, {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			'process.env': require('../config/dev.env')
+			'process.env': env
 		}),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
@@ -42,7 +43,9 @@ module.exports = merge(baseWebpackConfig, {
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: './static/index.html',
-			inject: true
+			inject: true,
+			title: '逻辑像素渲染',
+			viewport: 'width=device-width,user-scalable=no',
 		}),
 	]
 });
