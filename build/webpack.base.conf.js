@@ -5,7 +5,7 @@ const config = require('../config')
 module.exports = {
 	context: path.resolve(__dirname, '..'),
 	entry: {
-		app: './src/app.js',
+		app: './src/main.js',
 	},
 	output: {
 		path: config.build.assetsRoot,
@@ -14,8 +14,9 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{test: /\.tag$/, use: 'riot-tag-loader', exclude: [/node_modules/]},
 			{test: /\.js$/, use: 'babel-loader', exclude: [/node_modules/]},
-			{test: /\.css$/, use: ['style-loader', 'css-loader']}
+			{test: /\.css$/, use: ['style-loader', 'css-loader']},
 		]
 	},
 };

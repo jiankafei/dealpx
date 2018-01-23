@@ -42,6 +42,8 @@ module.exports = merge(baseWebpackConfig, {
 			meta: [{name: 'viewport', content: 'width=device-width,user-scalable=no'}],
 			links: [],
 			scripts: [],
+			appMountHtmlSnippet: '<app></app>',
+			bodyHtmlSnippet: '<app></app>',
 		}),
 	]
 });

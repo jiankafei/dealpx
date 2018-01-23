@@ -21,7 +21,9 @@ const HWP = {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true,
-    },
+	},
+	appMountHtmlSnippet: '<app></app>',
+	bodyHtmlSnippet: '<app></app>',
 };
 
 module.exports = merge(baseWebpackConfig, {
