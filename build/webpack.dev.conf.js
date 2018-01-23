@@ -5,6 +5,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const baseWebpackConfig = require('./webpack.base.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const htmlWebpackTemplate = require('html-webpack-template');
 
 const HOST = process.env.HOST;
 const PORT = process.env.PORT && Number(process.env.PORT);
@@ -23,21 +24,23 @@ module.exports = merge(baseWebpackConfig, {
 		proxy: config.dev.proxyTable,
 		watchOptions: {
 			poll: config.dev.poll,
-		}
+		},
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			'process.env': env
+			'process.env': env,
 		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
+		new webpack.NamedModulesPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new HtmlWebpackPlugin({
+			inject: false,
+			template: htmlWebpackTemplate,
 			filename: 'index.html',
-			template: './src/static/index.html',
-			inject: true,
 			title: '逻辑像素渲染',
-			viewport: 'width=device-width,user-scalable=no',
+			lang: 'zh-cmn-Hans',
+			meta: [{name: 'viewport', content: 'width=device-width,user-scalable=no'}],
+			scripts: [],
 		}),
 	]
 });
