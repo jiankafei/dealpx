@@ -42,7 +42,7 @@ module.exports = merge(baseWebpackConfig, {
 		new webpack.NoEmitOnErrorsPlugin(),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
-			template: './static/index.html',
+			template: './src/static/index.html',
 			inject: true,
 			title: '逻辑像素渲染',
 			viewport: 'width=device-width,user-scalable=no',

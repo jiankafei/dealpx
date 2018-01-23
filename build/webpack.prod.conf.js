@@ -22,7 +22,7 @@ module.exports = merge(baseWebpackConfig, {
 			filename: path.resolve(config.build.assetsSubDirectory, 'css/[name].[contenthash].css'),
 		}),
 		new HtmlWebpackPlugin({
-			template: './static/index.html',
+			template: './src/static/index.html',
 			filename: path.resolve(__dirname, '../dist/pp.html'),
 			inject: true,
 			minify: {
@@ -34,7 +34,7 @@ module.exports = merge(baseWebpackConfig, {
 			viewport: 'user-scalable=no',
 		}),
 		new HtmlWebpackPlugin({
-			template: './static/index.html',
+			template: './src/static/index.html',
 			filename: path.resolve(__dirname, '../dist/lp.html'),
 			inject: true,
 			minify: {
