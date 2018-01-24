@@ -41,7 +41,7 @@
 		let w, rpx;
 		w = de.getBoundingClientRect().width;
 		w > maxW && (w = maxW);
-		rpx = G.parseFloat(w * dpx / ds); // 为了通用性和
+		rpx = G.parseFloat(w * dpx / ds);
 		de.style.fontSize = rpx + 'px';
 	};
 	// 设备检测

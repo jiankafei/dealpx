@@ -5,30 +5,11 @@
   "main": "./src/index.js",
   "author": "zr",
   "license": "MPL-2.0",
-  "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
-    "build": "node build/build.js",
-    "trans": "node src/trans.js"
-  },
   "dependencies": {
-    "preact": "^8.2.7"
+    "postcss": "^6.0.16"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "css-loader": "^0.28.8",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "html-webpack-plugin": "^2.30.1",
-    "html-webpack-template": "^6.1.0",
-    "postcss": "^6.0.16",
-    "rimraf": "^2.6.2",
-    "style-loader": "^0.19.1",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.0",
-    "webpack-merge": "^4.1.1"
+    "babel-preset-env": "^1.6.1"
   }
 }
