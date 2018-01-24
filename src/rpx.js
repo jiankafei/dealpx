@@ -25,10 +25,14 @@
 
 	// 改变窗口
 	G.addEventListener('resize', function () {
+		clearTimeout(tid);
 		tid = G.setTimeout(setrpx, 300);
 	}, false);
 	G.addEventListener('pageshow', function (ev) {
-		ev.persisted && (clearTimeout(tid), tid = G.setTimeout(setrpx, 300));
+		if (ev.persisted) {
+			clearTimeout(tid);
+			tid = G.setTimeout(setrpx, 300)
+		};
 	}, false);
 	G.orientation !== undefined && G.addEventListener('orientationchange', function(){
 		tid = G.setTimeout(setrpx, 300);
