@@ -2,14 +2,17 @@
   "name": "postcss-unit-converter",
   "version": "1.0.0",
   "description": "单位转换器",
-  "main": "./src/index.js",
+  "main": "src/index.js",
   "author": "zr",
   "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jiankafei/postcss-unit-converter.git"
+  },
   "dependencies": {
     "postcss": "^6.0.16"
   },
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
+  "engines": {
+    "node": ">=8.9.0"
   }
 }
