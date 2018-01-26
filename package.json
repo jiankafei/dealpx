@@ -1,5 +1,5 @@
 {
-  "name": "postcss-px-converter",
+  "name": "dealpx",
   "version": "1.0.0",
   "description": "单位转换器",
   "main": "index.js",
@@ -7,7 +7,7 @@
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jiankafei/postcss-px-converter.git"
+    "url": "git@github.com:jiankafei/dealpx.git"
   },
   "dependencies": {
     "postcss": "^6.0.16"
