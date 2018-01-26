@@ -2,8 +2,8 @@
   "name": "postcss-unit-converter",
   "version": "1.0.0",
   "description": "单位转换器",
-  "main": "src/index.js",
-  "author": "zr",
+  "main": "index.js",
+  "author": "zren",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
