@@ -69,9 +69,11 @@ class RuleManage {
 		@media only screen and (min-resolution: 1.5dppx){${sel2}}
 		@media only screen and (min-resolution: 2.5dppx){${sel3}}
 		@media only screen and (min-resolution: 3.5dppx){${sel4}}`);
+		return this;
 	}
 	clean(){
 		this.queue.length = 0;
+		return this;
 	}
 }
 // 边框操作
@@ -171,7 +173,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
 		}
-		ruleMng.queue.length !== 0 && ruleMng.addToRule(root) && ruleMng.clean();
-		brMng.queue.length !== 0 && brMng.addToRule(root) && brMng.clean();
+		ruleMng.queue.length !== 0 && ruleMng.addToRule(root).clean();
+		brMng.queue.length !== 0 && brMng.addToRule(root).clean();
     };
 });
