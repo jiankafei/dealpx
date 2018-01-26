@@ -1,3 +1,5 @@
+import { root } from 'postcss';
+
 /**
  * Author Zr
  * 注意：
@@ -16,6 +18,7 @@ const defaultOptions = {
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
 	onePP: true, // 是否1px，默认true
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
+	layout: 414, // 在pc上显示做的额外处理，包括宽度限制，fixed元素居中显示，默认414
 	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
 		// media - 不转换，但为字体大小添加媒体查询
@@ -30,8 +33,8 @@ function isExclude(selector, exclude){
 		if (black instanceof RegExp) return black.test(selector);
 	});
 };
-// 规则操作
-class RuleManage {
+// 为px单位规则添加媒体查询操作
+class PXMediaQueryManage {
 	constructor(){
 		this.queue = [];
 	}
@@ -75,7 +78,7 @@ class RuleManage {
 		return this;
 	}
 }
-// 边框操作
+// 1px边框操作
 class BorderManage {
 	constructor(){
 		this.queue = [];
@@ -116,6 +119,26 @@ class BorderManage {
 		return this;
 	}
 }
+// pc显示操作
+class PCLayoutManage {
+	constructor(){
+		this.queue = [];
+	}
+	addToQueue(sel){
+		this.queue.push(sel);
+	}
+	addToRule(root, layout){
+		let sel = 'html.pc';
+		for (const item of this.queue) {
+			sel += `,${item}`;
+		}
+		root.append(`.pc *::-webkit-scrollbar{display: none !important}${sel}{margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
+		return this;
+	}
+	clean(){
+		return this;
+	}
+}
 // 银行家舍入法
 function toFixed(num, d){
 	const re = new RegExp(`^(\\d*\\.\\d{${d-1}})(\\d)(\\d)`);
@@ -143,8 +166,9 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		if (options.unit === 'rem') return toFixed(pixels / options.rpx, options.digits) + options.unit; // rem单位，和rpx配套
 		else return toFixed(pixels / options.size * 100, options.digits) + options.unit; // vw单位
 	};
-	const ruleMng = new RuleManage();
+	const pxmqMng = new PXMediaQueryManage();
 	const brMng = new BorderManage();
+	const pclyMng = new PCLayoutManage();
     return root => {
 		// AST处理
         root.walkRules(rule => {
@@ -159,11 +183,13 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 							decl.value = decl.value.replace(pxRegExp, replaceFn);
 							break;
 						case 'media':
-							ruleMng.addToQueue(rule.selector, decl);
+							pxmqMng.addToQueue(rule.selector, decl);
 							break;
 					}
-				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) {
+				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
 					brMng.addToQueue(rule, decl);
+				}　else if (decl.value.indexOf('fixed') !== -1) { // 处理pc显示
+					pclyMng.addToQueue(rule.selector);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
@@ -176,7 +202,8 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
 		}
-		ruleMng.queue.length !== 0 && ruleMng.addToRule(root).clean();
+		pxmqMng.queue.length !== 0 && pxmqMng.addToRule(root).clean();
 		brMng.queue.length !== 0 && brMng.addToRule(root).clean();
+		pclyMng.queue.length !== 0 && pclyMng.addToRule(root, options.layout).clean();
     };
 });
