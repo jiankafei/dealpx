@@ -96,7 +96,8 @@ class BorderManage {
 			v2 = v.replace(re, '0.5');
 			v3 = v.replace(re, '0.33333');
 			v4 = v.replace(re, '0.25');
-			root.append(`@media only screen and (-webkit-device-pixel-ratio: 1){.ios ${sel}{${prop}: ${v};}}
+			root.append(`.pc ${sel}{${prop}: ${v};}
+			@media only screen and (-webkit-device-pixel-ratio: 1){.ios ${sel}{${prop}: ${v};}}
 			@media only screen and (-webkit-device-pixel-ratio: 2){.ios ${sel}{${prop}: ${v2};}}
 			@media only screen and (-webkit-device-pixel-ratio: 3){.ios ${sel}{${prop}: ${v3};}}
 			@media only screen and (-webkit-device-pixel-ratio: 4){.ios ${sel}{${prop}: ${v4};}}
