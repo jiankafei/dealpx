@@ -71,7 +71,7 @@ class RuleManage {
 		return this;
 	}
 	clean(){
-		this.queue.length = 0;
+		this.queue = [];
 		return this;
 	}
 }
@@ -90,7 +90,6 @@ class BorderManage {
 		const re = /1(?=px)/;
 		let v, v2, v3, v4, sel, prop;
 		for (const item of this.queue) {
-			item.rule.removeChild(item.decl); // 先删除当前border
 			sel = item.rule.selector;
 			prop = item.decl.prop;
 			v = item.decl.value;
@@ -106,10 +105,13 @@ class BorderManage {
 			@media only screen and (min-resolution: 1.5dppx){.droid ${sel}:after{width: 200%;height: 200%;transform: scale3d(.5,.5,1);}}
 			@media only screen and (min-resolution: 2.5dppx){.droid ${sel}:after{width: 300%;height: 300%;transform: scale3d(.33333,.33333,1);}}
 			@media only screen and (min-resolution: 3.5dppx){.droid ${sel}:after{width: 400%;height: 400%;transform: scale3d(.25,.25,1);}}`);
+			item.rule.removeChild(item.decl); // 删除当前border
 		}
+		return this;
 	}
 	clean(){
-		this.queue.length = 0;
+		this.queue = [];
+		return this;
 	}
 }
 // 银行家舍入法
