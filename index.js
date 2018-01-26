@@ -1,5 +1,4 @@
 /**
- * UnitConverter
  * Author Zr
  * 注意：
  * １．黑名单选择器只能是单个选择器(a,b{...})不被允许

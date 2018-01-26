@@ -1,5 +1,5 @@
 {
-  "name": "postcss-unit-converter",
+  "name": "postcss-px-converter",
   "version": "1.0.0",
   "description": "单位转换器",
   "main": "index.js",
@@ -7,7 +7,7 @@
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jiankafei/postcss-unit-converter.git"
+    "url": "git@github.com:jiankafei/postcss-px-converter.git"
   },
   "dependencies": {
     "postcss": "^6.0.16"
