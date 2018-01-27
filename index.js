@@ -16,7 +16,6 @@ const defaultOptions = {
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
 	onePP: true, // 是否1px，默认true
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
-	layout: 414, // 在pc上显示做的额外处理，包括宽度限制，fixed元素居中显示，默认414
 	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
 		// media - 不转换，但为字体大小添加媒体查询
@@ -110,23 +109,19 @@ class BorderManage {
 	}
 }
 // pc显示操作
-class PCLayoutManage {
+class PCFixedManage {
 	constructor(){
 		this.queue = [];
 	}
 	addToQueue(sel){
 		this.queue.push(sel);
 	}
-	addToRule(root, layout){
+	addToRule(root){
 		let sel = '.pc ';
 		sel += this.queue.join(',').split(',').join(',.pc ');
-		root.append(`${sel}{left: 0 !important;right: 0 !important;margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
+		root.append(`${sel}{left: 0!important;right: 0!important;margin-left: auto!important;margin-right: auto!important;width: 414px!important;}`);
 		this.queue = [];
 	}
-}
-//添加新规则
-function addGlobalRule(root, layout){
-	root.append(`.pc *::-webkit-scrollbar{display: none !important}html.pc{margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
 }
 // 银行家舍入法
 function toFixed(num, d){
@@ -157,7 +152,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 	};
 	const pxmqMng = new PXMediaQueryManage();
 	const brMng = new BorderManage();
-	const pclyMng = new PCLayoutManage();
+	const pcfMng = new PCFixedManage();
     return root => {
 		// AST处理
         root.walkRules(rule => {
@@ -165,7 +160,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 			if (isExclude(rule.selector, options.excludeRule)) return;
 			rule.walkDecls((decl, i) => {
 				// 处理pc上fixed显示
-				if (decl.value.indexOf('fixed') !== -1) pclyMng.addToQueue(rule.selector);
+				if (decl.value.indexOf('fixed') !== -1) pcfMng.addToQueue(rule.selector);
 				// px单个声明处理
 				if (decl.value.indexOf('px') === -1) return; // 值没有px则直接返回
 				if (decl.prop.indexOf('font') !== -1) { // 处理字体
@@ -192,9 +187,8 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 			});
 		}
 		// 添加规则
-		addGlobalRule(root, options.layout);
 		pxmqMng.queue.length !== 0 && pxmqMng.addToRule(root);
 		brMng.queue.length !== 0 && brMng.addToRule(root);
-		pclyMng.queue.length !== 0 && pclyMng.addToRule(root, options.layout);
+		pcfMng.queue.length !== 0 && pcfMng.addToRule(root);
     };
 });
