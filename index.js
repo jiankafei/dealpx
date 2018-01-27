@@ -69,11 +69,7 @@ class PXMediaQueryManage {
 		@media only screen and (min-resolution: 1.5dppx){${sel2}}
 		@media only screen and (min-resolution: 2.5dppx){${sel3}}
 		@media only screen and (min-resolution: 3.5dppx){${sel4}}`);
-		return this;
-	}
-	clean(){
 		this.queue = [];
-		return this;
 	}
 }
 // 1px边框操作
@@ -104,17 +100,13 @@ class BorderManage {
 			@media only screen and (-webkit-device-pixel-ratio: 4){.ios ${sel}{${prop}: ${v4};}}
 			.droid ${sel}{position: relative;}
 			.droid ${sel}:after{content: \'\\2002\';position: absolute;left: 0;top: 0;transform-origin: 0 0;${prop}: ${v};pointer-events: none;}
-			@media only screen and (min-resolution: 1.5dppx){.droid ${sel}:after{width: 200%;height: 200%;transform: scale3d(.5,.5,1);}}
-			@media only screen and (min-resolution: 2.5dppx){.droid ${sel}:after{width: 300%;height: 300%;transform: scale3d(.33333,.33333,1);}}
-			@media only screen and (min-resolution: 3.5dppx){.droid ${sel}:after{width: 400%;height: 400%;transform: scale3d(.25,.25,1);}}`);
+			@media only screen and (min-resolution: 1.5dppx){.android ${sel}:after{width: 200%;height: 200%;transform: scale3d(.5,.5,1);}}
+			@media only screen and (min-resolution: 2.5dppx){.android ${sel}:after{width: 300%;height: 300%;transform: scale3d(.33333,.33333,1);}}
+			@media only screen and (min-resolution: 3.5dppx){.android ${sel}:after{width: 400%;height: 400%;transform: scale3d(.25,.25,1);}}`);
 			// 删除当前border
 			item.decl.remove();
 		}
-		return this;
-	}
-	clean(){
 		this.queue = [];
-		return this;
 	}
 }
 // pc显示操作
@@ -126,16 +118,17 @@ class PCLayoutManage {
 		this.queue.push(sel);
 	}
 	addToRule(root, layout){
-		let sel = 'html.pc';
+		let sel = '';
 		for (const item of this.queue) {
 			sel += `,${item}`;
 		}
-		root.append(`.pc *::-webkit-scrollbar{display: none !important}${sel}{margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
-		return this;
+		root.append(`${sel}{left: 0 !important;right: 0 !important;margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
+		this.queue = [];
 	}
-	clean(){
-		return this;
-	}
+}
+//添加新规则
+function addGlobalRule(root, layout){
+	root.append(`.pc *::-webkit-scrollbar{display: none !important}html.pc{margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
 }
 // 银行家舍入法
 function toFixed(num, d){
@@ -173,7 +166,9 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 			// 单个规则处理
 			if (isExclude(rule.selector, options.excludeRule)) return;
 			rule.walkDecls((decl, i) => {
-				// 单个声明处理
+				// 处理pc上fixed显示
+				if (decl.value.indexOf('fixed') !== -1) pclyMng.addToQueue(rule.selector);
+				// px单个声明处理
 				if (decl.value.indexOf('px') === -1) return; // 值没有px则直接返回
 				if (decl.prop.indexOf('font') !== -1) { // 处理字体
 					switch (options.fontSize) {
@@ -186,8 +181,6 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 					}
 				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
 					brMng.addToQueue(rule, decl);
-				}　else if (decl.value.indexOf('fixed') !== -1) { // 处理pc显示
-					pclyMng.addToQueue(rule.selector);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
@@ -200,8 +193,10 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 				rule.params = rule.params.replace(pxRegExp, replaceFn);
 			});
 		}
-		pxmqMng.queue.length !== 0 && pxmqMng.addToRule(root).clean();
-		brMng.queue.length !== 0 && brMng.addToRule(root).clean();
-		pclyMng.queue.length !== 0 && pclyMng.addToRule(root, options.layout).clean();
+		// 添加规则
+		addGlobalRule(root, options.layout);
+		pxmqMng.queue.length !== 0 && pxmqMng.addToRule(root);
+		brMng.queue.length !== 0 && brMng.addToRule(root);
+		pclyMng.queue.length !== 0 && pclyMng.addToRule(root, options.layout);
     };
 });
