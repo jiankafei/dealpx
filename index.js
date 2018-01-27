@@ -11,8 +11,8 @@ const postcss = require('postcss');
 
 const defaultOptions = {
 	unit: 'rem', // 转换到的单位，默认rem(vw | rem)
-	size: 750, // 设计稿像素宽度，默认750
-	rpx: 75, // 设计稿大小对应的根字体大小，默认75
+	ds: 750, // 设计稿像素宽度，默认750
+	dpx: 75, // 设计稿大小对应的根字体大小，默认75
 	digits: 4, // 单位精度，默认4，none表示不做处理
 	excludeRule: [], // 选择器黑名单，元素为string | regexp
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
@@ -163,8 +163,8 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		if (!p1) return m;
 		const pixels = parseFloat(p1);
 		if (pixels <= 1) return m;
-		if (options.unit === 'rem') return toFixed(pixels / options.rpx, options.digits) + options.unit; // rem单位，和rpx配套
-		else return toFixed(pixels / options.size * 100, options.digits) + options.unit; // vw单位
+		if (options.unit === 'rem') return toFixed(pixels / options.dpx, options.digits) + options.unit; // rem单位，和rpx配套
+		else return toFixed(pixels / options.ds * 100, options.digits) + options.unit; // vw单位
 	};
 	const pxmqMng = new PXMediaQueryManage();
 	const brMng = new BorderManage();
