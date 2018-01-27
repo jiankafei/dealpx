@@ -118,10 +118,8 @@ class PCLayoutManage {
 		this.queue.push(sel);
 	}
 	addToRule(root, layout){
-		let sel = '';
-		for (const item of this.queue) {
-			sel += `,${item}`;
-		}
+		let sel = '.pc ';
+		sel += this.queue.join(',').split(',').join(',.pc ');
 		root.append(`${sel}{left: 0 !important;right: 0 !important;margin-left: auto !important;margin-right: auto !important;width: ${layout}px !important;}`);
 		this.queue = [];
 	}
