@@ -1,5 +1,3 @@
-import { root } from 'postcss';
-
 /**
  * Author Zr
  * 注意：
