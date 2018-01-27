@@ -98,8 +98,8 @@ class BorderManage {
 			@media only screen and (-webkit-device-pixel-ratio: 2){.ios ${sel}{${prop}: ${v2};}}
 			@media only screen and (-webkit-device-pixel-ratio: 3){.ios ${sel}{${prop}: ${v3};}}
 			@media only screen and (-webkit-device-pixel-ratio: 4){.ios ${sel}{${prop}: ${v4};}}
-			.droid ${sel}{position: relative;}
-			.droid ${sel}:after{content: \'\\2002\';position: absolute;left: 0;top: 0;transform-origin: 0 0;${prop}: ${v};pointer-events: none;}
+			.android ${sel}{position: relative;}
+			.android ${sel}:after{content: \'\\2002\';position: absolute;left: 0;top: 0;transform-origin: 0 0;${prop}: ${v};pointer-events: none;}
 			@media only screen and (min-resolution: 1.5dppx){.android ${sel}:after{width: 200%;height: 200%;transform: scale3d(.5,.5,1);}}
 			@media only screen and (min-resolution: 2.5dppx){.android ${sel}:after{width: 300%;height: 300%;transform: scale3d(.33333,.33333,1);}}
 			@media only screen and (min-resolution: 3.5dppx){.android ${sel}:after{width: 400%;height: 400%;transform: scale3d(.25,.25,1);}}`);
