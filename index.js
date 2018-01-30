@@ -16,6 +16,7 @@ const defaultOptions = {
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
 	onePP: true, // 是否1px，默认true
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
+	minRadius: 5, // radius最小半径，默认5，表示小于该值不转换
 	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
 		// media - 不转换，但为字体大小添加媒体查询
@@ -152,7 +153,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 	};
 	const pxmqMng = new PXMediaQueryManage();
 	const brMng = new BorderManage();
-	const pcfMng = new PCFixedManage();
+	// const pcfMng = new PCFixedManage();
     return root => {
 		// AST处理
         root.walkRules(rule => {
@@ -160,7 +161,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 			if (isExclude(rule.selector, options.excludeRule)) return;
 			rule.walkDecls((decl, i) => {
 				// 处理pc上fixed显示
-				if (decl.value.indexOf('fixed') !== -1) pcfMng.addToQueue(rule.selector);
+				// if (decl.value.indexOf('fixed') !== -1) pcfMng.addToQueue(rule.selector);
 				// px单个声明处理
 				if (decl.value.indexOf('px') === -1) return; // 值没有px则直接返回
 				if (decl.prop.indexOf('font') !== -1) { // 处理字体
@@ -174,6 +175,8 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 					}
 				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
 					brMng.addToQueue(rule, decl);
+				} else if (decl.prop.indexOf('radius') !== -1 && Math.floor(decl.value) > options.minRadius) { // 处理border-radius
+					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
@@ -189,6 +192,6 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 		// 添加规则
 		pxmqMng.queue.length !== 0 && pxmqMng.addToRule(root);
 		brMng.queue.length !== 0 && brMng.addToRule(root);
-		pcfMng.queue.length !== 0 && pcfMng.addToRule(root);
+		// pcfMng.queue.length !== 0 && pcfMng.addToRule(root);
     };
 });
