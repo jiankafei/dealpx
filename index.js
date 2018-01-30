@@ -16,7 +16,6 @@ const defaultOptions = {
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
 	onePP: true, // 是否1px，默认true
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
-	minRadius: 5, // radius最小半径，默认5，表示小于该值不转换
 	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
 		// media - 不转换，但为字体大小添加媒体查询
@@ -175,8 +174,6 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 					}
 				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
 					brMng.addToQueue(rule, decl);
-				} else if (decl.prop.indexOf('radius') !== -1 && Math.floor(decl.value) > options.minRadius) { // 处理border-radius
-					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
 				}
