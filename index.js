@@ -14,7 +14,7 @@ const defaultOptions = {
 	digits: 4, // 单位精度，默认4，none表示不做处理
 	excludeRule: [], // 选择器黑名单，元素为string | regexp
 	excludeDecl: [], // 属性黑名单，元素为string | regexp
-	onePP: true, // 是否1px，默认true
+	onepx: true, // 是否1px，默认true
 	mediaQuery: false, // 是否转换媒体查询里的单位，默认false
 	fontSize: 'none', // 字体大小处理，默认none
 		// convert - 转换字体的单位，默认值
@@ -109,7 +109,7 @@ class BorderManage {
 	}
 }
 // pc显示操作
-class PCFixedManage {
+/* class PCFixedManage {
 	constructor(){
 		this.queue = [];
 	}
@@ -122,7 +122,7 @@ class PCFixedManage {
 		root.append(`${sel}{left: 0!important;right: 0!important;margin-left: auto!important;margin-right: auto!important;width: 414px!important;}`);
 		this.queue = [];
 	}
-}
+} */
 // 银行家舍入法
 function toFixed(num, d){
 	const re = new RegExp(`^(\\d*\\.\\d{${d-1}})(\\d)(\\d)`);
@@ -172,7 +172,7 @@ module.exports = postcss.plugin('post-unit-converter', options => {
 							pxmqMng.addToQueue(rule.selector, decl);
 							break;
 					}
-				} else if (decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
+				} else if (options.onepx && decl.prop.indexOf('border') !== -1 && decl.value.indexOf('1px') !== -1) { // 处理1px
 					brMng.addToQueue(rule, decl);
 				} else { // 默认处理
 					decl.value = decl.value.replace(pxRegExp, replaceFn);
